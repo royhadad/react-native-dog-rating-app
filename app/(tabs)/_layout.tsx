@@ -28,14 +28,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="settingsScreen"
-        options={{
-          title: "Settings",
-          tabBarIcon: ({ color }) => <TabBarIcon name="gear" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="rateScreen"
+        name="index"
         options={{
           title: "Rate",
           tabBarIcon: ({ color }) => <TabBarIcon name="dog" color={color} />,
@@ -62,6 +55,13 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="ranking-star" color={color} />
           ),
+        }}
+      />
+      <Tabs.Screen
+        name="settingsScreen"
+        options={{
+          title: "Settings",
+          tabBarIcon: ({ color }) => <TabBarIcon name="gear" color={color} />,
         }}
       />
     </Tabs>
