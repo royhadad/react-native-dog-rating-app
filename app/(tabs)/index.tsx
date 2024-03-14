@@ -1,7 +1,8 @@
 import { Image, StyleSheet } from "react-native";
 import z from "zod";
 import { Text, View } from "@/components/Themed";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { RatingButtons } from "@/app/(tabs)/RatingButtons/RatingButtons";
 
 const DogSchema = z.object({
   message: z.string(),
@@ -14,14 +15,33 @@ async function getDog(): Promise<Dog> {
   return DogSchema.parse(data);
 }
 
+async function saveRating(dog: string, rating: number) {
+  console.log(`Saving rating ${rating} for dog ${dog}`);
+}
+
 export default function RateScreen() {
   const dogQuery = useQuery({ queryKey: ["dog"], queryFn: getDog });
+  const queryClient = useQueryClient();
+
+  async function rateDog(dog: string, rating: number) {
+    await Promise.all([
+      queryClient.invalidateQueries({ queryKey: ["dog"] }),
+      saveRating(dog, rating),
+    ]);
+  }
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Rate!</Text>
       <View style={styles.imageContainer}>
         <Image source={{ uri: dogQuery.data?.message }} style={styles.image} />
+      </View>
+      <View>
+        <RatingButtons
+          onPress={async (rating) => {
+            await rateDog(dogQuery.data?.message as string, rating);
+          }}
+        />
       </View>
       <View
         style={styles.separator}
