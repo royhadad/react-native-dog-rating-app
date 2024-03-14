@@ -30,13 +30,11 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   button: {
-    backgroundColor: "#4CAF50",
+    backgroundColor: "lightblue",
     padding: 10,
-    margin: 2,
-    width: "28%", // three buttons per row
+    width: "10%", // three buttons per row
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 5,
   },
   buttonText: {
     color: "#fff",
