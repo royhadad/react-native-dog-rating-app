@@ -3,6 +3,7 @@ import z from "zod";
 import { Text, View } from "@/components/Themed";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { RatingButtons } from "./RatingButtons";
+import { ratingService } from "@/external_clients/ratingService/ratingService";
 
 const DogSchema = z.object({
   message: z.string(),
@@ -17,6 +18,7 @@ async function getDog(): Promise<Dog> {
 
 async function saveRating(dog: string, rating: number) {
   console.log(`Saving rating ${rating} for dog ${dog}`);
+  await ratingService.rateDog(dog, rating);
 }
 
 export function RateScreen() {
