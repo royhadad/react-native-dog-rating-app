@@ -1,4 +1,10 @@
-import { ActivityIndicator, Image, StyleSheet } from "react-native";
+import {
+  ActivityIndicator,
+  Animated,
+  Button,
+  Image,
+  StyleSheet,
+} from "react-native";
 import { Text, View } from "@/components/Themed";
 import { RatingButtons } from "./RatingButtons";
 import { ratingService } from "@/external_clients/ratingService/ratingService";
@@ -6,6 +12,7 @@ import {
   useInvalidateRandomDog,
   useRandomDog,
 } from "@/external_clients/dogsService/dogsServiceQueries";
+import { useEffect, useRef, useState } from "react";
 
 const emptyImage = require("@/assets/images/transparant_image.png");
 
@@ -22,17 +29,57 @@ export function RatingScreen() {
     await Promise.all([invalidateRandomDog(), saveRating(dog, rating)]);
   }
 
+  const dogImageOpacityAnimation = useRef(new Animated.Value(0)).current;
+  const dogImageOpacityStyle = { opacity: dogImageOpacityAnimation };
+
+  const spinnerOpacityAnimation = useRef(new Animated.Value(1)).current;
+  const spinnerOpacityStyle = { opacity: spinnerOpacityAnimation };
+
+  useEffect(
+    function animateDogImagesInAndOutOfScreen() {
+      if (dogQuery.isFetching) {
+        Animated.timing(dogImageOpacityAnimation, {
+          toValue: 0,
+          duration: 250,
+          useNativeDriver: true,
+        }).start(() => {
+          Animated.timing(spinnerOpacityAnimation, {
+            toValue: 1,
+            duration: 250,
+            delay: 500,
+            useNativeDriver: true,
+          }).start();
+        });
+      } else {
+        Animated.timing(spinnerOpacityAnimation, {
+          toValue: 0,
+          duration: 0,
+          useNativeDriver: true,
+        }).start(() => {
+          Animated.timing(dogImageOpacityAnimation, {
+            toValue: 1,
+            duration: 250,
+            useNativeDriver: true,
+          }).start();
+        });
+      }
+    },
+    [dogQuery.isFetching],
+  );
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Rate!</Text>
       <View style={styles.imageContainer}>
-        <ActivityIndicator size="large" style={styles.spinner} />
-        <Image
-          source={{
-            uri: dogQuery.isSuccess ? dogQuery.data.dogURL : emptyImage,
-          }}
-          style={{ ...styles.image, opacity: dogQuery.isSuccess ? 100 : 0 }}
-        />
+        <Animated.View style={[styles.spinner, spinnerOpacityStyle]}>
+          <ActivityIndicator color="blue" size="large" />
+        </Animated.View>
+        {dogQuery.isSuccess && (
+          <Animated.Image
+            source={{ uri: dogQuery.data.dogURL }}
+            style={[styles.image, dogImageOpacityStyle]}
+          />
+        )}
         {dogQuery.isError && <Text>Error</Text>}
       </View>
       <View>
@@ -79,10 +126,9 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     borderRadius: 100,
-    zIndex: 2,
+    position: "absolute",
   },
   spinner: {
     position: "absolute",
-    zIndex: 1,
   },
 });
