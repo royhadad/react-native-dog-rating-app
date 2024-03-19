@@ -1,5 +1,5 @@
-import { RateScreen } from "@/app/(tabs)/RatingScreen/RatingScreen";
+import { RatingScreen } from "@/app/(tabs)/RatingScreen/RatingScreen";
 
 export default function Index() {
-  return <RateScreen />;
+  return <RatingScreen />;
 }

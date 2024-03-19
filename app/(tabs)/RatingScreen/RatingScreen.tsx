@@ -1,4 +1,4 @@
-import { Image, StyleSheet } from "react-native";
+import { ActivityIndicator, Image, StyleSheet } from "react-native";
 import { Text, View } from "@/components/Themed";
 import { RatingButtons } from "./RatingButtons";
 import { ratingService } from "@/external_clients/ratingService/ratingService";
@@ -7,12 +7,14 @@ import {
   useRandomDog,
 } from "@/external_clients/dogsService/dogsServiceQueries";
 
+const emptyImage = require("@/assets/images/transparant_image.png");
+
 async function saveRating(dog: string, rating: number) {
   console.log(`Saving rating ${rating} for dog ${dog}`);
   await ratingService.rateDog(dog, rating);
 }
 
-export function RateScreen() {
+export function RatingScreen() {
   const invalidateRandomDog = useInvalidateRandomDog();
   const dogQuery = useRandomDog();
 
@@ -24,13 +26,14 @@ export function RateScreen() {
     <View style={styles.container}>
       <Text style={styles.title}>Rate!</Text>
       <View style={styles.imageContainer}>
-        {dogQuery.isFetching ? (
-          <Text>Loading...</Text>
-        ) : dogQuery.isError ? (
-          <Text>Error</Text>
-        ) : (
-          <Image source={{ uri: dogQuery.data?.dogURL }} style={styles.image} />
-        )}
+        <ActivityIndicator size="large" style={styles.spinner} />
+        <Image
+          source={{
+            uri: dogQuery.isSuccess ? dogQuery.data.dogURL : emptyImage,
+          }}
+          style={{ ...styles.image, opacity: dogQuery.isSuccess ? 100 : 0 }}
+        />
+        {dogQuery.isError && <Text>Error</Text>}
       </View>
       <View>
         <RatingButtons
@@ -65,10 +68,21 @@ const styles = StyleSheet.create({
     height: 1,
     width: "80%",
   },
-  imageContainer: {},
-  image: {
+  imageContainer: {
     width: 200,
     height: 200,
     borderRadius: 100,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  image: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 100,
+    zIndex: 2,
+  },
+  spinner: {
+    position: "absolute",
+    zIndex: 1,
   },
 });
