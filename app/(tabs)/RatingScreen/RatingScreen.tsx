@@ -1,20 +1,11 @@
 import { Image, StyleSheet } from "react-native";
-import z from "zod";
 import { Text, View } from "@/components/Themed";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { RatingButtons } from "./RatingButtons";
 import { ratingService } from "@/external_clients/ratingService/ratingService";
-
-const DogSchema = z.object({
-  message: z.string(),
-  status: z.string(),
-});
-type Dog = z.infer<typeof DogSchema>;
-async function getDog(): Promise<Dog> {
-  const res = await fetch("https://dog.ceo/api/breeds/image/random");
-  const data = await res.json();
-  return DogSchema.parse(data);
-}
+import {
+  useInvalidateRandomDog,
+  useRandomDog,
+} from "@/external_clients/dogsService/dogsServiceQueries";
 
 async function saveRating(dog: string, rating: number) {
   console.log(`Saving rating ${rating} for dog ${dog}`);
@@ -22,27 +13,31 @@ async function saveRating(dog: string, rating: number) {
 }
 
 export function RateScreen() {
-  const dogQuery = useQuery({ queryKey: ["dog"], queryFn: getDog });
-  const queryClient = useQueryClient();
+  const invalidateRandomDog = useInvalidateRandomDog();
+  const dogQuery = useRandomDog();
 
   async function rateDog(dog: string, rating: number) {
-    await Promise.all([
-      queryClient.invalidateQueries({ queryKey: ["dog"] }),
-      saveRating(dog, rating),
-    ]);
+    await Promise.all([invalidateRandomDog(), saveRating(dog, rating)]);
   }
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Rate!</Text>
       <View style={styles.imageContainer}>
-        <Image source={{ uri: dogQuery.data?.message }} style={styles.image} />
+        {dogQuery.isFetching ? (
+          <Text>Loading...</Text>
+        ) : dogQuery.isError ? (
+          <Text>Error</Text>
+        ) : (
+          <Image source={{ uri: dogQuery.data?.dogURL }} style={styles.image} />
+        )}
       </View>
       <View>
         <RatingButtons
           onPress={async (rating) => {
-            await rateDog(dogQuery.data?.message as string, rating);
+            await rateDog(dogQuery.data?.dogURL as string, rating);
           }}
+          disabled={dogQuery.isFetching || dogQuery.isError}
         />
       </View>
       <View

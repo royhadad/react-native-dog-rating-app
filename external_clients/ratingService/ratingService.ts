@@ -1,8 +1,7 @@
 // fake it for now, using an in memory DB
-const ratings = new Map<string, number[]>(); // dog -> ratings
+import { sleepFor500to1000ms } from "@/external_clients/externalClientsUtils";
 
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-const sleepFor500to1000ms = () => sleep(500 + Math.random() * 500); // simulate network latency
+const ratings = new Map<string, number[]>(); // dog -> ratings
 
 export class RatingService {
   async rateDog(dog: string, rating: number) {

@@ -1,14 +1,10 @@
 import { Button, StyleSheet } from "react-native";
 
 import { Text, View } from "@/components/Themed";
-import { useQuery } from "@tanstack/react-query";
-import { ratingService } from "@/external_clients/ratingService/ratingService";
+import { useTop10RatedDogs } from "@/external_clients/ratingService/ratingServiceQueries";
 
 export default function ScoreboardScreen() {
-  const top10RatedDogsQuery = useQuery({
-    queryKey: ["top10RatedDogs"],
-    queryFn: () => ratingService.getTopRatedDogs(10),
-  });
+  const top10RatedDogsQuery = useTop10RatedDogs();
 
   return (
     <View style={styles.container}>

@@ -1,9 +1,10 @@
 import React from "react";
 import { StyleSheet, TouchableOpacity, Text, View } from "react-native";
 
-export const RatingButtons: React.FC<{ onPress: (rating: number) => void }> = ({
-  onPress,
-}) => {
+export const RatingButtons: React.FC<{
+  onPress: (rating: number) => void;
+  disabled: boolean;
+}> = ({ onPress, disabled }) => {
   return (
     <View style={styles.container}>
       {[...Array(10).keys()].map((value) => {
@@ -13,6 +14,7 @@ export const RatingButtons: React.FC<{ onPress: (rating: number) => void }> = ({
             key={rating}
             style={styles.button}
             onPress={() => onPress(rating)}
+            disabled={disabled}
           >
             <Text style={styles.buttonText}>{rating}</Text>
           </TouchableOpacity>
