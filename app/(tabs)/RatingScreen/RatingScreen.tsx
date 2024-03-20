@@ -38,6 +38,7 @@ export function RatingScreen() {
   useEffect(
     function animateDogImagesInAndOutOfScreen() {
       if (dogQuery.isFetching) {
+        // animate dog image out of screen and spinner in
         Animated.timing(dogImageOpacityAnimation, {
           toValue: 0,
           duration: 250,
@@ -51,6 +52,7 @@ export function RatingScreen() {
           }).start();
         });
       } else {
+        // animate spinner out and dog image in
         Animated.timing(spinnerOpacityAnimation, {
           toValue: 0,
           duration: 0,
