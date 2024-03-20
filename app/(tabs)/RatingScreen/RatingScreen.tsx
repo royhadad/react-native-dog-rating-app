@@ -82,7 +82,7 @@ export function RatingScreen() {
         )}
         {dogQuery.isError && <Text>Error</Text>}
       </View>
-      <View>
+      <View style={{}}>
         <RatingButtons
           onPress={async (rating) => {
             await rateDog(dogQuery.data?.dogURL as string, rating);
@@ -98,7 +98,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-end",
+    gap: 50,
+    marginBottom: 50,
   },
   title: {
     fontSize: 20,
