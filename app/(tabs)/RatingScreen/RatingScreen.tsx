@@ -14,8 +14,6 @@ import {
 } from "@/external_clients/dogsService/dogsServiceQueries";
 import { useEffect, useRef, useState } from "react";
 
-const emptyImage = require("@/assets/images/transparant_image.png");
-
 async function saveRating(dog: string, rating: number) {
   console.log(`Saving rating ${rating} for dog ${dog}`);
   await ratingService.rateDog(dog, rating);
