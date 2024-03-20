@@ -17,7 +17,7 @@ export const RatingButtons: React.FC<{
       }}
     >
       {[1, 2, 3, 4, 5].map((rating) => (
-        <View key={rating} style={styles.buttonContainer}>
+        <View key={rating} style={{}}>
           <View
             style={{
               flexDirection: "column",
@@ -25,7 +25,14 @@ export const RatingButtons: React.FC<{
               alignItems: "center",
             }}
           >
-            <View style={{ gap: -80, justifyContent: "center", height: 150 }}>
+            <View
+              style={{
+                height: 150,
+                gap: -40,
+                justifyContent: "flex-start",
+                flexDirection: "column-reverse",
+              }}
+            >
               {new Array(rating).fill(null).map((_, index) => (
                 <Image source={BONE_IMAGE} style={{ height: 60, width: 60 }} />
               ))}
@@ -47,49 +54,3 @@ export const RatingButtons: React.FC<{
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    padding: 10,
-  },
-  buttonContainer: {
-    alignItems: "center",
-  },
-  boneRow: {
-    flexDirection: "row",
-    marginBottom: 5,
-  },
-  boneImage: {
-    width: 100,
-    height: 100,
-    marginRight: 5,
-  },
-  button: {
-    backgroundColor: "lightblue",
-    padding: 10,
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 20,
-  },
-});
-
-// <Image source={BONE_IMAGE} style={{ height: 100, width: 100 }} />
-// <View style={styles.boneRow}>
-//             {new Array(rating).map((_, index) => (
-//               <Image
-//                 key={index}
-//                 source={{ uri: BONE_IMAGE }}
-//                 style={styles.boneImage}
-//               />
-//             ))}
-//           </View>
-//           <TouchableOpacity
-//             style={styles.button}
-//             onPress={() => onPress(rating)}
-//             disabled={disabled}
-//           >
-//             <Text style={styles.buttonText}>{rating}</Text>
-//           </TouchableOpacity>
