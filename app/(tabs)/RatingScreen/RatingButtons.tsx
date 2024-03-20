@@ -7,6 +7,7 @@ export const RatingButtons: React.FC<{
   onPress: (rating: number) => void;
   disabled: boolean;
 }> = ({ onPress, disabled }) => {
+  const [lastSelectedRating, setLastSelectedRating] = React.useState(0);
   return (
     <View
       style={{
@@ -18,20 +19,34 @@ export const RatingButtons: React.FC<{
     >
       {[1, 2, 3, 4, 5].map((rating) => (
         <TouchableOpacity
-          style={{
-            borderColor: "lightgrey",
-            borderWidth: 1,
-            borderRadius: 20,
-            height: 150,
-            gap: -40,
-            justifyContent: "flex-start",
-            flexDirection: "column-reverse",
+          style={[
+            {
+              backgroundColor: "#3498db",
+              borderColor: "lightgrey",
+              borderWidth: 1,
+              borderRadius: 20,
+              height: 150,
+              gap: -40,
+              justifyContent: "flex-start",
+              flexDirection: "column-reverse",
+              alignContent: "center",
+            },
+            disabled && lastSelectedRating !== rating && { opacity: 0.5 },
+          ]}
+          activeOpacity={1}
+          onPress={() => {
+            setLastSelectedRating(rating);
+            onPress(rating);
           }}
-          onPress={() => onPress(rating)}
           disabled={disabled}
+          key={rating}
         >
           {new Array(rating).fill(null).map((_, index) => (
-            <Image source={BONE_IMAGE} style={{ height: 60, width: 60 }} />
+            <Image
+              source={BONE_IMAGE}
+              style={{ height: 60, width: 60 }}
+              key={index}
+            />
           ))}
         </TouchableOpacity>
       ))}

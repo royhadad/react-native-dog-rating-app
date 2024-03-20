@@ -69,7 +69,9 @@ export function RatingScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Rate!</Text>
+      <View>
+        <Text style={styles.title}>Rate!</Text>
+      </View>
       <View style={styles.imageContainer}>
         <Animated.View style={[styles.spinner, spinnerOpacityStyle]}>
           <ActivityIndicator color="blue" size="large" />
@@ -100,7 +102,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-end",
     gap: 50,
-    marginBottom: 50,
+    paddingBottom: 50,
   },
   title: {
     fontSize: 20,
