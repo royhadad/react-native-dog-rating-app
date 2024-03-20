@@ -92,12 +92,6 @@ export function RatingScreen() {
           disabled={dogQuery.isFetching || dogQuery.isError}
         />
       </View>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
-      <Text>Hi there!!!</Text>
     </View>
   );
 }
