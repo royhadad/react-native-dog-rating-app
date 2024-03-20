@@ -2,7 +2,6 @@ import React from "react";
 import { View, StyleSheet, TouchableOpacity, Text, Image } from "react-native";
 
 const BONE_IMAGE = require("@/assets/images/bone.png");
-// inline styles only!
 
 export const RatingButtons: React.FC<{
   onPress: (rating: number) => void;
