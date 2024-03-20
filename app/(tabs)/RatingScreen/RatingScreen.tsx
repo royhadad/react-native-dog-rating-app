@@ -70,7 +70,7 @@ export function RatingScreen() {
   return (
     <View style={styles.container}>
       <View>
-        <Text style={styles.title}>Rate!</Text>
+        <Text style={styles.title}>Rate Doggos! 🐶</Text>
       </View>
       <View style={styles.imageContainer}>
         <Animated.View style={[styles.spinner, spinnerOpacityStyle]}>

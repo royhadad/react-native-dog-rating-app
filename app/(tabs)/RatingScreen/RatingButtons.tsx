@@ -21,8 +21,8 @@ export const RatingButtons: React.FC<{
         <TouchableOpacity
           style={[
             {
-              backgroundColor: "#3498db",
-              borderColor: "lightgrey",
+              backgroundColor: "#d1ecff", // Light blue
+              borderColor: "lightblue", // Lighter shade of the base color
               borderWidth: 1,
               borderRadius: 20,
               height: 150,
